@@ -2,6 +2,7 @@ services:
   - type: web
     name: interview-showcase-api
     runtime: docker
+    plan: free
     dockerfilePath: ./src/backend/InterviewShowcase.Api/Dockerfile
     healthCheckPath: /health
     autoDeploy: true
@@ -23,5 +24,6 @@ services:
 
 databases:
   - name: interview-showcase-db
+    plan: free
     databaseName: showcase
     user: showcase
