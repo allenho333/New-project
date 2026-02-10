@@ -1,0 +1,236 @@
+:root {
+  font-family: "Space Grotesk", "Segoe UI", sans-serif;
+  color: #f7f8ff;
+  background-color: #081227;
+  line-height: 1.4;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(900px 500px at 80% -20%, rgba(48, 110, 255, 0.3), transparent),
+    radial-gradient(800px 400px at -10% 10%, rgba(0, 205, 156, 0.2), transparent),
+    #081227;
+}
+
+.layout {
+  margin: 0 auto;
+  max-width: 1120px;
+  padding: 3rem 1.25rem 4rem;
+}
+
+.hero h1 {
+  margin: 0.4rem 0;
+  font-size: clamp(2rem, 3.7vw, 3.2rem);
+}
+
+.hero p {
+  max-width: 700px;
+  color: #cdd7f9;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #68e5c3;
+  font-size: 0.85rem;
+}
+
+.auth-card,
+.session-bar,
+.stat-card,
+.manager-card {
+  border-radius: 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(145deg, rgba(16, 33, 64, 0.7), rgba(8, 23, 48, 0.9));
+}
+
+.auth-card {
+  margin-top: 1.5rem;
+  padding: 1rem;
+}
+
+.auth-card h2 {
+  margin-top: 0;
+}
+
+.auth-card p {
+  margin-top: 0;
+  color: #abc0f7;
+  font-size: 0.9rem;
+}
+
+.auth-form {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.auth-form label {
+  display: grid;
+  gap: 0.4rem;
+}
+
+input,
+select,
+textarea {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(12, 24, 47, 0.95);
+  color: #f7f8ff;
+  border-radius: 0.45rem;
+  padding: 0.6rem 0.75rem;
+  font: inherit;
+}
+
+textarea {
+  min-height: 88px;
+  resize: vertical;
+}
+
+.auth-actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+button {
+  border: 0;
+  border-radius: 0.5rem;
+  padding: 0.65rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: #68e5c3;
+  color: #05222f;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.session-bar {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status {
+  margin: 1rem 0;
+  color: #d8def8;
+}
+
+.error {
+  color: #ff9ea8;
+}
+
+.stats-grid {
+  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+}
+
+.stat-card {
+  padding: 1rem;
+}
+
+.stat-card h3 {
+  margin: 0;
+  color: #abc0f7;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.stat-card p {
+  margin: 0.4rem 0 0;
+  font-size: 1.85rem;
+  font-weight: 700;
+}
+
+.manager-grid {
+  margin-top: 1.5rem;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.manager-card {
+  padding: 1rem;
+}
+
+.manager-card h2 {
+  margin: 0 0 0.75rem;
+}
+
+.manager-form {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.manager-form label {
+  display: grid;
+  gap: 0.35rem;
+  color: #cdd7f9;
+}
+
+.list-wrap {
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.list-row {
+  padding: 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0.55rem;
+  background: rgba(6, 18, 39, 0.75);
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.list-row p {
+  margin: 0.2rem 0 0;
+  color: #abc0f7;
+  font-size: 0.88rem;
+}
+
+.row-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.row-actions button {
+  padding: 0.45rem 0.7rem;
+  font-size: 0.85rem;
+}
+
+.muted {
+  margin: 0;
+  color: #abc0f7;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 900px) {
+  .manager-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .session-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .list-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

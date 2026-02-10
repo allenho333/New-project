@@ -1,0 +1,36 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  api-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - name: Restore
+        run: dotnet restore src/backend/InterviewShowcase.Api/InterviewShowcase.Api.csproj
+      - name: Build
+        run: dotnet build src/backend/InterviewShowcase.Api/InterviewShowcase.Api.csproj --configuration Release --no-restore
+      - name: Test
+        run: dotnet test tests/InterviewShowcase.Api.Tests/InterviewShowcase.Api.Tests.csproj --configuration Release
+
+  web-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: src/frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install
+        run: npm install
+      - name: Build
+        run: npm run build

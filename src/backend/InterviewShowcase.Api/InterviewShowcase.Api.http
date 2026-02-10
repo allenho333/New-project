@@ -1,0 +1,88 @@
+@InterviewShowcase.Api_HostAddress = http://localhost:8080
+@token = REPLACE_WITH_JWT
+@projectId = REPLACE_WITH_PROJECT_ID
+@taskId = REPLACE_WITH_TASK_ID
+
+### Health
+GET {{InterviewShowcase.Api_HostAddress}}/health
+Accept: application/json
+
+### Login (demo account)
+POST {{InterviewShowcase.Api_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "demo@interview.dev",
+  "password": "Demo123!"
+}
+
+### List projects
+GET {{InterviewShowcase.Api_HostAddress}}/api/projects
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### Create project
+POST {{InterviewShowcase.Api_HostAddress}}/api/projects
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "AWS Deployment",
+  "description": "Deploy API and frontend with CI/CD and observability",
+  "status": 1
+}
+
+### Update project
+PUT {{InterviewShowcase.Api_HostAddress}}/api/projects/{{projectId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "AWS Deployment Updated",
+  "description": "Deploy API and frontend on AWS using Terraform",
+  "status": 1
+}
+
+### Delete project
+DELETE {{InterviewShowcase.Api_HostAddress}}/api/projects/{{projectId}}
+Authorization: Bearer {{token}}
+
+### List tasks
+GET {{InterviewShowcase.Api_HostAddress}}/api/tasks
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### Create task
+POST {{InterviewShowcase.Api_HostAddress}}/api/tasks
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Provision VPC",
+  "priority": 2,
+  "state": 0,
+  "dueDate": "2026-03-01",
+  "projectId": "{{projectId}}"
+}
+
+### Update task
+PUT {{InterviewShowcase.Api_HostAddress}}/api/tasks/{{taskId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Provision VPC and ECS",
+  "priority": 2,
+  "state": 1,
+  "dueDate": "2026-03-05",
+  "projectId": "{{projectId}}"
+}
+
+### Delete task
+DELETE {{InterviewShowcase.Api_HostAddress}}/api/tasks/{{taskId}}
+Authorization: Bearer {{token}}
+
+### Dashboard summary
+GET {{InterviewShowcase.Api_HostAddress}}/api/dashboard/summary
+Authorization: Bearer {{token}}
+Accept: application/json
