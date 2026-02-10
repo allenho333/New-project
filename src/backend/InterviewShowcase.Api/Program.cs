@@ -46,7 +46,13 @@ builder.Services
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<JwtTokenService>();
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+{
+    var rawConnectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+        ?? builder.Configuration["ConnectionStrings__DefaultConnection"]
+        ?? throw new InvalidOperationException("DefaultConnection is not configured.");
+
+    options.UseNpgsql(NormalizePostgresConnectionString(rawConnectionString));
+});
 
 var app = builder.Build();
 
@@ -351,4 +357,59 @@ static string[] GetAllowedOrigins(IConfiguration configuration)
     }
 
     return ["http://localhost:5173", "http://localhost:3000"];
+}
+
+static string NormalizePostgresConnectionString(string raw)
+{
+    if (raw.StartsWith("postgres://", StringComparison.OrdinalIgnoreCase) ||
+        raw.StartsWith("postgresql://", StringComparison.OrdinalIgnoreCase))
+    {
+        var uri = new Uri(raw);
+        var userInfoParts = uri.UserInfo.Split(':', 2, StringSplitOptions.None);
+        var username = Uri.UnescapeDataString(userInfoParts[0]);
+        var password = userInfoParts.Length > 1 ? Uri.UnescapeDataString(userInfoParts[1]) : string.Empty;
+        var database = uri.AbsolutePath.TrimStart('/');
+
+        var queryParams = ParseQuery(uri.Query);
+        queryParams.TryGetValue("sslmode", out var sslMode);
+
+        var parts = new List<string>
+        {
+            $"Host={uri.Host}",
+            $"Port={uri.Port}",
+            $"Database={database}",
+            $"Username={username}",
+            $"Password={password}"
+        };
+
+        if (!string.IsNullOrWhiteSpace(sslMode))
+        {
+            parts.Add($"SSL Mode={sslMode}");
+        }
+
+        return string.Join(';', parts);
+    }
+
+    return raw;
+}
+
+static Dictionary<string, string> ParseQuery(string query)
+{
+    var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+    if (string.IsNullOrWhiteSpace(query))
+    {
+        return result;
+    }
+
+    var trimmed = query.TrimStart('?');
+    var pairs = trimmed.Split('&', StringSplitOptions.RemoveEmptyEntries);
+    foreach (var pair in pairs)
+    {
+        var keyValue = pair.Split('=', 2, StringSplitOptions.None);
+        var key = Uri.UnescapeDataString(keyValue[0]);
+        var value = keyValue.Length > 1 ? Uri.UnescapeDataString(keyValue[1]) : string.Empty;
+        result[key] = value;
+    }
+
+    return result;
 }
