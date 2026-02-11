@@ -372,11 +372,12 @@ static string NormalizePostgresConnectionString(string raw)
 
         var queryParams = ParseQuery(uri.Query);
         queryParams.TryGetValue("sslmode", out var sslMode);
+        var port = uri.IsDefaultPort || uri.Port <= 0 ? 5432 : uri.Port;
 
         var parts = new List<string>
         {
             $"Host={uri.Host}",
-            $"Port={uri.Port}",
+            $"Port={port}",
             $"Database={database}",
             $"Username={username}",
             $"Password={password}"
